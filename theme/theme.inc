@@ -40,6 +40,17 @@ function template_preprocess_islandora_basic_collection_wrapper(&$variables) {
   }
   list($total_count, $results) = islandora_basic_collection_get_member_objects($islandora_object, $page_number, $page_size);
 
+  /* -- OPENSKY customization  --------------
+       If there are not sub-collections, then view this collection as search
+       results
+  */
+  module_load_include('inc', 'opensky', 'includes/utilities');
+  if (!opensky_has_subcollections($islandora_object->id)) {
+	opensky_redirect_to_search_view($islandora_object->id);
+	return;
+  }
+  // ------- end customization ----------
+
   pager_default_initialize($total_count, $page_size);
   $variables['collection_pager'] = theme('pager', array('quantity' => 10));
   $display = (empty($_GET['display'])) ? variable_get('islandora_basic_collection_default_view', 'grid') : $_GET['display'];

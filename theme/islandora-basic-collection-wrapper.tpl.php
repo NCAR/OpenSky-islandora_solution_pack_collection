@@ -7,13 +7,29 @@
  * @TODO: needs documentation about file and variables
  */
 ?>
-
 <div class="islandora-basic-collection-wrapper">
+
+  <!-- OpenSky Customization (islandora-basic-collection-wrapper.tpl.php) -->
+  <?php if ($islandora_object->id != 'opensky:root'): ?>
+    <div id="collection-search">
+      <h2 style="font-size:1.0em">Search this collection</h2>
+      <?php
+        $block = module_invoke('opensky', 'block_view', 'opensky_browse_collection_search');
+        print render($block['content']);
+      ?>
+    </div>
+  <?php endif; ?>
+
   <?php if (!$display_metadata && !empty($dc_array['dc:description']['value'])): ?>
     <p><?php print nl2br($dc_array['dc:description']['value']); ?></p>
-    <hr />
   <?php endif; ?>
+
+
   <div class="islandora-basic-collection clearfix">
+    <?php if ($islandora_object->id != 'opensky:root'): ?>
+      <hr />
+    <?php endif; ?>
+
     <span class="islandora-basic-collection-display-switch">
       <ul class="links inline">
         <?php foreach ($view_links as $link): ?>
